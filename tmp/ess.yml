@@ -1,0 +1,61 @@
+services:
+  nova-ess-p:
+    container_name: nova-ess-p
+    environment:
+    - ESS_REDIS_IP=nova-redis
+    - ESS_REDIS_PORT=$REDIS_PORT
+    - KAFKA_SERVERS=nova-kafka:$KAFKA_PORT
+    - ESS_EVENT_DIR=/hairou/data/
+    - ESS_EVENT_BACKUP=off
+    - ESS_TEST_ONLY=off
+    - MOCK_SCAN_RESULT=off
+    - ESS_LL_PRODUCER=com.hairoutech.ess.actor.robot.kubot.comm.EssLinkLayerProducerActor
+    - SWAGGER_UI_DIR=/hairou/public/swagger-ui/
+    - CONVEYOR_TYPE=modbus
+    - WMS_CORE_URL=http://nova-iwms-core
+    - WMS_STATION_URL=http://nova-iwms-station
+    - ESS_SIMULATION=off
+    extra_hosts:
+    - nova-etcd:$HOST_IP
+    - nova-kafdrop:$HOST_IP
+    - nova-kafka:$HOST_IP
+    - nova-mongodb:$HOST_IP
+    - nova-mysql:$HOST_IP
+    - nova-nacos:$HOST_IP
+    - nova-redis:$HOST_IP
+    - nova-aiaas-op:$HOST_IP
+    - nova-aiaas-runtime:$HOST_IP
+    - nova-algo-charging:$HOST_IP
+    - nova-algo-mc:$HOST_IP
+    - nova-algo-op:$HOST_IP
+    - nova-algo-pp:$HOST_IP
+    - nova-ess-p:$HOST_IP
+    - nova-ess-p-facade:$HOST_IP
+    - nova-haiq-gateway:$HOST_IP
+    - nova-haiq-i18n:$HOST_IP
+    - nova-haiq-link-admin:$HOST_IP
+    - nova-haiq-link-app:$HOST_IP
+    - nova-haiq-user:$HOST_IP
+    - nova-haiq-data:$HOST_IP
+    - nova-iwms-adapter:$HOST_IP
+    - nova-iwms-core:$HOST_IP
+    - nova-iwms-station:$HOST_IP
+    - nova-algo:$HOST_IP
+    - mc.algo.hr.com:$HOST_IP
+    - pp.algo.hr.com:$HOST_IP
+    - charge.algo.hr.com:$HOST_IP
+    - op.algo.hr.com:$HOST_IP
+    image: 172.20.8.203/hairounova-test/nova-ess-p:haiflow_20221014_4.0.0-230223112151
+    network_mode: bridge
+    ports:
+    - $ESS_P_PORT:9000
+    - 4762:4762
+    - 8888:8888
+    - 8889:8889
+    restart: always
+    volumes:
+    - /etc/localtime:/etc/localtime
+    - ./map:/hairou/map
+    - ./data:/hairou/data
+    - ./logs:/hairou/logs
+version: '3'

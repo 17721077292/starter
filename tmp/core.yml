@@ -1,0 +1,22 @@
+services:
+  core:
+    container_name: nova-simulator-core
+    environment:
+    - TZ=Asia/Shanghai
+    - MQ_PROVIDER=redis
+    - DISABLE_MODBUS_PICKING_SLOT_SIGNAL=${DISABLE_MODBUS_PICKING_SLOT_SIGNAL}
+    - SYNC_ESS_TICK=false
+    extra_hosts:
+    - nova-kafka:$HOST_IP
+    - nova-redis:$HOST_IP
+    image: 172.18.81.65:5000/hairounova/nova_simulator_core:4.1.21.1
+    network_mode: bridge
+    ports:
+    - 9009:9009
+    - 1502-1702:1502-1702
+    - 25678:15678
+    volumes:
+    - ./log:/app/log
+    - /etc/localtime:/etc/localtime:ro
+    - ../nova-simulator-mlog/simulog/:/app/simulog/
+version: '3.1'
